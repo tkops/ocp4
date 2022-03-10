@@ -1,7 +1,9 @@
-[root@tk-bastion ~]# cd ocp4
+# OCP4 UPI Installation on vshpere
+
+```
 [root@tk-bastion ocp4]#  echo ******* > pw
 [root@tk-bastion ocp4]#  ansible-galaxy collection install -r requirements.yml
- 
+ ```
 [root@bastion ~]# ssh-keygen -t rsa -q -N "" -f ~/.ssh/id_rsa
 [root@bastion ~]# cat ~/.ssh/id_rsa.pub > ~/.ssh/authorized_keys
  
