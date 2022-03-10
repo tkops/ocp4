@@ -1,0 +1,82 @@
+---
+# tasks file for bastion
+
+- name: vimrc
+  copy:
+    dest: ~/.vimrc
+    content: "set paste\n"
+
+- name: install epel-release
+  yum:
+    name: epel-release
+    state: latest
+
+- name: install packages
+  yum:
+    name: 
+      - ansible 
+      - git 
+      - vim 
+      - bash-completion
+      - wget
+      - net-tools
+      - bind-utils
+      - unzip
+    state: latest
+  
+- name: install galaxy collections
+  command: "ansible-galaxy collection install {{ item }}"
+  loop:
+    - ansible.posix
+    - community.general
+  changed_when: false
+
+- name: create directory
+  file:
+    state: directory
+    dest: "{{ ocp_dir }}"
+    
+
+- name: get openshift installer
+  get_url:
+    url: "{{ item }}"
+    dest: "{{ ocp_dir }}"
+  loop:
+    - https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-client-linux.tar.gz
+    - https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-install-linux.tar.gz
+
+- name: unpack openshift installer
+  unarchive:
+    src: "{{ ocp_dir }}/{{ item }}"
+    dest: "{{ ocp_dir }}"
+  loop:
+    - openshift-install-linux.tar.gz
+    - openshift-client-linux.tar.gz
+
+- name: get vcenter certs
+  get_url:
+    url: https://vc.ad.av360.org/certs/download.zip 
+    dest: "{{ ocp_dir }}"
+    validate_certs: no
+
+- name: unpack certs
+  unarchive:
+    src: "{{ ocp_dir }}/download.zip"
+    dest: "{{ ocp_dir }}"
+
+- name: create filelist
+  find:
+    path: "{{ ocp_dir }}/certs/lin"
+    pattern: "*.0"
+  register: result
+
+- name: copy certs to pki
+  copy:
+    src: "{{ item.path }}"
+    dest: /etc/pki/ca-trust/source/anchors
+  loop: "{{ result.files }}"
+
+- name: enable certs
+  command: update-ca-trust
+  changed_when: false
+

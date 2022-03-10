@@ -1,0 +1,17 @@
+---
+
+- hosts: localhost
+  vars:
+    ocp_dir: "/root/openshift"
+  roles:
+    - bastion
+  tags: bastion
+
+- hosts: loadbalancer
+  roles:
+    - nginx
+  tags: nginx
+- hosts: loadbalancer
+  roles:
+    - haproxy
+  tags: haproxy

@@ -1,0 +1,38 @@
+---
+# tasks file for haproxy
+
+- name: add ips
+  nmcli:
+    conn_name: ens192
+    ip4:
+      - 10.22.59.99/24
+      - 10.22.59.106/24
+      - 10.22.59.107/24
+    state: present
+
+- name: disable firewalld
+  service:
+    name: firewalld.service
+    state: stopped
+    enabled: false
+
+- name: disable selinux
+  selinux:
+    policy: targeted
+    state: permissive
+
+- name: install haproxy
+  yum:
+    name: haproxy
+    state: latest 
+
+- name: configure haproxy
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+
+- name: start haproxy
+  service:
+    name: haproxy
+    state: started
+    enabled: true
