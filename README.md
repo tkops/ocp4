@@ -1,8 +1,8 @@
 # OCP4 UPI Installation on vshpere
 ## set password for ansible vault and install reqs
 ```
-[root@tk-bastion ocp4]#  echo ******* > pw
-[root@tk-bastion ocp4]#  ansible-galaxy collection install -r requirements.yml
+[root@bastion ocp4]#  echo ******* > pw
+[root@bastion ocp4]#  ansible-galaxy collection install -r requirements.yml
  ```
  ## create ssh key if not present
  ```
@@ -12,31 +12,31 @@
  
 ## prepare openshift with ansible playbook
 ```
-[root@tk-bastion ocp4]# ansible-playbook ocp4.yml   
+[root@bastion ocp4]# ansible-playbook ocp4.yml   
  ```
  
 ## create VMs with RHCOS template and vmoption files
 ```
-[root@tk-bastion ocp4]# find /root/openshift/TK/*vmoptions
+[root@bastion ocp4]# find /root/openshift/TK/*vmoptions
  ```
  
 ## connect via oc to openshift cluster
 ```
-[root@tk-bastion openshift]# export KUBECONFIG=$(find /root -name kubeconfig )
-[root@tk-bastion openshift]# cp $(find /root -name oc) /usr/local/bin
-[root@tk-bastion openshift]# oc get nodes
+[root@bastion openshift]# export KUBECONFIG=$(find /root -name kubeconfig )
+[root@bastion openshift]# cp $(find /root -name oc) /usr/local/bin
+[root@bastion openshift]# oc get nodes
  ```
  
 ## approve csr for worker nodes twice
 ```
-[root@tk-bastion openshift]# oc get csr|awk '$NF=="Pending"{print $1}'|xargs oc adm certificate approve
+[root@bastion openshift]# oc get csr|awk '$NF=="Pending"{print $1}'|xargs oc adm certificate approve
  ```
  
 ## all nodes (worker and master should be ready)
 ```
-[root@tk-bastion openshift]# oc get nodes
+[root@bastion openshift]# oc get nodes
  ```
 ## wait until all pods running and ready
 ```
-[root@tk-bastion openshift]# watch "oc get pods -A|grep -v Completed|egrep -v '([1-9])\/\1'"
+[root@bastion openshift]# watch "oc get pods -A|grep -v Completed|egrep -v '([1-9])\/\1'"
 ```
