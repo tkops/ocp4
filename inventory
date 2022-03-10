@@ -4,6 +4,10 @@ bastion.tk.env.av360.org
 [loadbalancer]
 bastion.tk.env.av360.org
 
+[ocp:children]
+bootstrap
+master
+worker
 
 [bootstrap]
 bootstrap.tk.env.av360.org

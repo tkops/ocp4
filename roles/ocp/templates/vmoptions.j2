@@ -1,0 +1,26 @@
+#### {{ item }} ####
+
+
+disk.EnableUUID: TRUE
+
+guestinfo.ignition.config.data.encoding: base64
+
+guestinfo.ignition.config.data: 
+
+{% if item in groups['bootstrap'] %}
+{{ lookup('file', ocp_dir + '/TK/merge-bootstrap.64') }}
+{% endif %}
+
+{% if item in groups['master'] %}
+{{ lookup('file', ocp_dir + '/TK/master.64') }}
+{% endif %}
+
+{% if item in groups['worker'] %}
+{{ lookup('file', ocp_dir + '/TK/worker.64') }}
+{% endif %}
+
+guestinfo.afterburn.initrd.network-kargs: ip={{ lookup('dig','master01.tk.env.av360.org') }}::10.22.59.1:255.255.255.0:{{ item }}:ens192:none nameserver=10.22.59.6 nameserver=10.22.59.7
+
+
+
+

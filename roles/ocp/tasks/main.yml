@@ -1,2 +1,79 @@
 ---
 # tasks file for ocp
+
+- name: remove old installations
+  file:
+    path: "{{ ocp_dir }}/TK"
+    state: absent
+
+- name: create Cluster Install dir
+  file:
+    path: "{{ ocp_dir }}/TK"
+    state: directory
+
+- name: copy install-config
+  template:
+    src: install-config.yaml.j2
+    dest: "{{ ocp_dir }}/TK/install-config.yaml"
+
+- name: create manifest
+  command: "{{ ocp_dir }}/openshift-install create manifests --dir {{ ocp_dir }}/TK"
+
+- name: list files to delete
+  find:
+    path: "{{ ocp_dir }}/TK/openshift"
+    pattern: "99_openshift-cluster-api_master-machines-*.yaml"
+  register: result
+
+- name: remove some yamls
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ result.files }}"
+
+- name: list files to delete
+  find:
+    path: "{{ ocp_dir }}/TK/openshift"
+    pattern: "99_openshift-cluster-api_worker-machineset-*.yaml"
+  register: result
+
+- name: remove some yamls
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ result.files }}"
+
+- name: make master unschedulable
+  lineinfile:
+    path: "{{ ocp_dir }}/TK/manifests/cluster-scheduler-02-config.yml"
+    line: "  mastersSchedulable: false"
+    regexp: "^  mastersSchedulable:" 
+
+- name: create ignition files
+  command: "{{ ocp_dir }}/openshift-install create ignition-configs --dir {{ ocp_dir }}/TK"
+
+
+- name: copy bootstrap ignition file to nginx
+  copy:
+    src: "{{ ocp_dir }}/TK/bootstrap.ign"
+    dest: /usr/share/nginx/html
+    mode: 644
+
+- name: copy base64 merge bootstrap file
+  copy:
+    src: merge-bootstrap.64
+    dest: "{{ ocp_dir }}/TK"
+
+- name: base64 encode ignition files
+  shell: base64 -w0 {{ ocp_dir }}/TK/master.ign > {{ ocp_dir }}/TK/master.64
+
+- name: base64 encode ignition files
+  shell: base64 -w0 {{ ocp_dir }}/TK/worker.ign > {{ ocp_dir }}/TK/worker.64
+
+- name: create vmoption files
+  template:
+    src: vmoptions.j2
+    dest: "{{ ocp_dir }}/TK/{{ item }}.vmoptions"
+  loop: "{{ groups['ocp'] }}"
+  tags: bla
+

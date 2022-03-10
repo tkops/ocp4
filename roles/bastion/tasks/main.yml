@@ -22,6 +22,7 @@
       - net-tools
       - bind-utils
       - unzip
+      - python3-dns
     state: latest
   
 - name: install galaxy collections
@@ -79,4 +80,7 @@
 - name: enable certs
   command: update-ca-trust
   changed_when: false
+
+- name: install dnspython
+  command:  pip3 install dnspython
 

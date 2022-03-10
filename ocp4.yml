@@ -1,8 +1,6 @@
 ---
 
 - hosts: localhost
-  vars:
-    ocp_dir: "/root/openshift"
   roles:
     - bastion
   tags: bastion
@@ -15,3 +13,8 @@
   roles:
     - haproxy
   tags: haproxy
+
+- hosts: localhost
+  roles:
+    - ocp
+  tags: ocp
