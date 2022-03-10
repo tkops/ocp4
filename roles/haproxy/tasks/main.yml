@@ -4,11 +4,19 @@
 - name: add ips
   nmcli:
     conn_name: ens192
+    type: ethernet
+    ifname: ens192
+    dns4_search: tk.env.av360.org
+    gw4: 10.22.59.1
+    dns4:
+      - 10.22.59.6
+      - 10.22.59.7
     ip4:
       - 10.22.59.99/24
       - 10.22.59.106/24
       - 10.22.59.107/24
     state: present
+  tags: nmcli
 
 - name: disable firewalld
   service:

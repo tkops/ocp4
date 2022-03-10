@@ -58,11 +58,14 @@
     src: "{{ ocp_dir }}/TK/bootstrap.ign"
     dest: /usr/share/nginx/html
     mode: 644
-
+ 
 - name: copy base64 merge bootstrap file
   copy:
-    src: merge-bootstrap.64
+    src: merge-bootstrap.ign
     dest: "{{ ocp_dir }}/TK"
+
+- name: encode merge-bootstrap.ign
+  shell: "base64 -w0 {{ ocp_dir }}/TK/merge-bootstrap.ign > {{ ocp_dir }}/TK/merge-bootstrap.64"
 
 - name: base64 encode ignition files
   shell: base64 -w0 {{ ocp_dir }}/TK/master.ign > {{ ocp_dir }}/TK/master.64

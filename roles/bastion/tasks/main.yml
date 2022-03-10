@@ -25,13 +25,6 @@
       - python3-dns
     state: latest
   
-- name: install galaxy collections
-  command: "ansible-galaxy collection install {{ item }}"
-  loop:
-    - ansible.posix
-    - community.general
-  changed_when: false
-
 - name: create directory
   file:
     state: directory

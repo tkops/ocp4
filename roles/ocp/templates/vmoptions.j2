@@ -19,7 +19,7 @@ guestinfo.ignition.config.data:
 {{ lookup('file', ocp_dir + '/TK/worker.64') }}
 {% endif %}
 
-guestinfo.afterburn.initrd.network-kargs: ip={{ lookup('dig','master01.tk.env.av360.org') }}::10.22.59.1:255.255.255.0:{{ item }}:ens192:none nameserver=10.22.59.6 nameserver=10.22.59.7
+guestinfo.afterburn.initrd.network-kargs: ip={{ lookup('dig',item ) }}::10.22.59.1:255.255.255.0:{{ item }}:ens192:none nameserver=10.22.59.6 nameserver=10.22.59.7
 
 
 

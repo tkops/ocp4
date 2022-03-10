@@ -1,0 +1,19 @@
+{
+  "ignition": {
+    "config": {
+      "merge": [
+        {
+          "source": "http://bastion.tk.env.av360.org/bootstrap.ign",
+          "verification": {}
+        }
+      ]
+    },
+    "timeouts": {},
+    "version": "3.2.0"
+  },
+  "networkd": {},
+  "passwd": {},
+  "storage": {},
+  "systemd": {}
+}
+
