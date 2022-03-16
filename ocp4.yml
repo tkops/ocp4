@@ -18,3 +18,8 @@
   roles:
     - ocp
   tags: ocp
+
+- hosts: localhost
+  roles:
+    - terraform
+  tags: terraform
