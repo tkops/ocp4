@@ -36,8 +36,8 @@
     url: "{{ item }}"
     dest: "{{ ocp_dir }}"
   loop:
-    - https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-client-linux.tar.gz
-    - https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-install-linux.tar.gz
+    - https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable-4.9/openshift-install-linux.tar.gz
+    - https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable-4.9/openshift-client-linux.tar.gz
 
 - name: unpack openshift installer
   unarchive:
