@@ -1,5 +1,5 @@
 # OCP4 UPI Installation on vshpere
-## Instllation Flow
+## Installation Flow
 ```mermaid
 flowchart TD
     subgraph ocp
