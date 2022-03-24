@@ -22,9 +22,9 @@ flowchart TD
       end
     end
     b1 --get ignition--> n1
-    master --get ignition--> h3 --> bootstrap
+    master --get ignition--> haproxy --> bootstrap
     master --get config--> bootstrap
-    worker --get ignition--> h3 --> bootstrap
+    worker --get ignition--> haproxy --> bootstrap
     worker --get config--> master
 
     
