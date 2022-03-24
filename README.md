@@ -1,12 +1,20 @@
 # OCP4 UPI Installation on vshpere
 ## set password for ansible vault and install reqs
 ```mermaid
-graph TD;
-    A[bastion]-->B[master1];
-    A-->C[master2];
-    A-->D[master3];
-    E[worker1];
-    F[worker2];
+flowchart TB
+    c1-->a2
+    subgraph one
+    a1-->a2
+    end
+    subgraph two
+    b1-->b2
+    end
+    subgraph three
+    c1-->c2
+    end
+    one --> two
+    three --> two
+    two --> c2
     
 ```
 
