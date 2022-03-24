@@ -2,19 +2,22 @@
 ## set password for ansible vault and install reqs
 ```mermaid
 flowchart TB
-    c1-->a2
-    subgraph one
-    a1-->a2
+    subgraph Master
+    m1[master1]
+    subgraph ingress
+    i1(ingresscontroller)
     end
-    subgraph two
-    b1-->b2
+    m2[master2];m3[master3];
     end
-    subgraph three
-    c1-->c2
+    subgraph haproxy
+    b1[Loadbalancer]
     end
-    one --> two
-    three --> two
-    two --> c2
+    subgraph Worker
+    w1;w2
+    end
+    Master --> Worker
+    haproxy --> Master
+    haproxy <--> Worker
     
 ```
 
