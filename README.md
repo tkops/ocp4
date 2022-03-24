@@ -1,5 +1,12 @@
 # OCP4 UPI Installation on vshpere
 ## set password for ansible vault and install reqs
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+
 ```
 [root@bastion ocp4]#  echo ******* > pw
 [root@bastion ocp4]#  ansible-galaxy collection install -r requirements.yml
