@@ -6,10 +6,10 @@ flowchart TB
        subgraph master
            m1[master1]
            m2[master2];m3[master3];
-           subgraph ingress
-             i1(ingresscontroller)
-           end
-       end
+        end
+    end
+    subgraph ingress
+      i1(ingresscontroller)
     end
     subgraph haproxy
     b1[Loadbalancer]
