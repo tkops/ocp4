@@ -16,13 +16,15 @@ flowchart TD
     subgraph bastion
       n1(nginx)
       subgraph haproxy
-         api:6443;apps:443/80;ign:22623
+         h1[api:6443]
+         h2[apps:443/80]
+         h3[ign:22623]
       end
     end
     b1 --get ignition--> n1
     master --get ignition--> bootstrap
     master --get config--> bootstrap
-    worker --get ignition--> ign --> bootstrap
+    worker --get ignition--> h3 --> bootstrap
     worker --get config--> master
 
     
