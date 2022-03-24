@@ -16,7 +16,7 @@ flowchart TD
     subgraph bastion
       n1(nginx)
       subgraph haproxy
-         api;apps
+         api;apps;ign
       end
     end
     b1 --get ignition--> n1
