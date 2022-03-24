@@ -22,7 +22,7 @@ flowchart TD
     b1 --get ignition--> n1
     master --get ignition--> bootstrap
     master --get config--> bootstrap
-    worker --get ignition--> bootstrap
+    worker --get ignition--> --ign--> bootstrap
     worker --get config--> master
 
     
