@@ -6,6 +6,7 @@ graph TD;
     A-->C;
     B-->D;
     C-->D;
+```
 
 ```
 [root@bastion ocp4]#  echo ******* > pw
