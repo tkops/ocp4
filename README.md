@@ -16,6 +16,8 @@ flowchart TD
     subgraph bastion
       n1(nginx)
       n2(haproxy)
+      subgraph api
+      end
     end
     b1 --get ignition--> n1
     master --get ignition--> bootstrap
