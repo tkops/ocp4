@@ -5,6 +5,8 @@ graph TD;
     A[bastion]-->B[master1];
     A-->C[master2];
     A-->D[master3];
+    E[worker1];
+    F[worker2];
     
 ```
 
