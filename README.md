@@ -1,25 +1,30 @@
 # OCP4 UPI Installation on vshpere
 ## set password for ansible vault and install reqs
 ```mermaid
-flowchart TB
+flowchart TD
     subgraph ocp
        subgraph master
-           m1[master1]
-           m2[master2];m3[master3];
+           m1;m2;m3
+        end
+        subgraph worker
+          w1;w2
         end
     end
-    subgraph ingress
-      i1(ingresscontroller)
+    subgraph bootstrap
+      b1[bootstrap.tk.env.av360.org]
     end
     subgraph haproxy
-    b1[Loadbalancer]
+      h1((loadbalancer))
     end
-    subgraph Worker
-    w1;w2
+    subgraph nginx
+      n1(webserver)
     end
-    Master --> Worker
-    haproxy --> Master
-    haproxy <--> Worker
+    b1 --get ignition--> n1
+    master --get ignition--> bootstrap
+    master --get config--> bootstrap
+    worker --get ignition--> bootstrap
+    worker --get config--> master
+
     
 ```
 
