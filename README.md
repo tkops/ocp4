@@ -6,8 +6,7 @@
  ```
  ## create ssh key if not present
  ```
-[root@bastion ~]# ssh-keygen -t rsa -q -N "" -f ~/.ssh/id_rsa
-[root@bastion ~]# cat ~/.ssh/id_rsa.pub > ~/.ssh/authorized_keys
+[root@bastion ~]# ls ~/.ssh/id_rsa &> /dev/null || ssh-keygen -t rsa -q -N "" -f ~/.ssh/id_rsa &&  cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys
  ```
  
 ## prepare openshift with ansible playbook
