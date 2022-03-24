@@ -47,6 +47,13 @@
     - openshift-install-linux.tar.gz
     - openshift-client-linux.tar.gz
 
+- name: cop oc to /usr/local/bin
+  copy:
+    src: "{{ ocp_dir }}/oc"
+    dest: /usr/local/bin
+    mode: '0755'
+  tags: bla
+
 - name: get vcenter certs
   get_url:
     url: https://vc.ad.av360.org/certs/download.zip 
@@ -77,3 +84,8 @@
 - name: install dnspython
   command:  pip3 install dnspython
 
+- name: set kubeconfig
+  lineinfile:
+    path: /root/.bashrc
+    line: 'export KUBECONFIG={{ ocp_dir }}/TK/auth/kubeconfig'
+  tags: bla

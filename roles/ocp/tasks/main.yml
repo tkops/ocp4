@@ -15,6 +15,7 @@
   template:
     src: install-config.yaml.j2
     dest: "{{ ocp_dir }}/TK/install-config.yaml"
+  tags: tobias
 
 - name: create manifest
   command: "{{ ocp_dir }}/openshift-install create manifests --dir {{ ocp_dir }}/TK"

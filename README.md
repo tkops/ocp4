@@ -14,10 +14,6 @@
 [root@bastion ocp4]# ansible-playbook ocp4.yml   
  ```
  
-## create VMs with RHCOS template and vmoption files
-```
-[root@bastion ocp4]# find /root/openshift/TK/*vmoptions
- ```
  
 ## connect via oc to openshift cluster
 ```
@@ -26,7 +22,7 @@
 [root@bastion openshift]# oc get nodes
  ```
  
-## approve csr for worker nodes twice
+## approve csr for each worker node twice
 ```
 [root@bastion openshift]# oc get csr|awk '$NF=="Pending"{print $1}'|xargs oc adm certificate approve
  ```

@@ -18,6 +18,9 @@
     state: present
   tags: nmcli
 
+- name: up ens192 connection
+  shell: nmcli connection up ens192
+
 - name: disable firewalld
   service:
     name: firewalld.service
