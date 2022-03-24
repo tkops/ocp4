@@ -13,11 +13,9 @@ flowchart TD
     subgraph bootstrap
       b1[bootstrap.tk.env.av360.org]
     end
-    subgraph haproxy
-      h1((loadbalancer))
-    end
-    subgraph nginx
-      n1(webserver)
+    subgraph bastion
+      n1(nginx)
+      n2(haproxy)
     end
     b1 --get ignition--> n1
     master --get ignition--> bootstrap
