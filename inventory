@@ -13,12 +13,10 @@ worker
 bootstrap.tk.env.av360.org
 
 [master]
-master01.tk.env.av360.org
-master02.tk.env.av360.org
-master03.tk.env.av360.org
+tsk0001.tk.env.av360.org
+tsk0002.tk.env.av360.org
+tsk0003.tk.env.av360.org
 
 [worker]
-worker01.tk.env.av360.org
-worker02.tk.env.av360.org
-
-
+tsk0004.tk.env.av360.org
+tsk0005.tk.env.av360.org

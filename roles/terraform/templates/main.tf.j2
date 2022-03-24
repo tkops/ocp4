@@ -1,0 +1,104 @@
+# Basic configuration withour variables
+
+# Define authentification configuration
+provider "vsphere" {
+  # If you use a domain set your login like this "MyDomain\\MyUser"
+  user           = "tobias.koch@ad.av360.org"
+  password       = "{{ tk_vcenter_pw }}"
+  vsphere_server = "vc.ad.av360.org"
+
+
+  # if you have a self-signed cert
+  allow_unverified_ssl = true
+}
+
+#### RETRIEVE DATA INFORMATION ON VCENTER ####
+
+data "vsphere_datacenter" "dc" {
+  name = "AV360"
+}
+
+data "vsphere_resource_pool" "pool" {
+  # If you haven't resource pool, put" after cluster name
+  name          = "DEMO/Resources"
+  datacenter_id = data.vsphere_datacenter.dc.id
+}
+
+data "vsphere_host" "host" {
+  name          = "hp-esxi-1.ad.av360.org"
+  datacenter_id = data.vsphere_datacenter.dc.id
+}
+
+# Retrieve datastore information on vsphere
+data "vsphere_datastore" "datastore" {
+  name          = "SSD-1"
+  datacenter_id = data.vsphere_datacenter.dc.id
+}
+
+# Retrieve network information on vsphere
+data "vsphere_network" "network" {
+  name          = "VLAN2159"
+  datacenter_id = data.vsphere_datacenter.dc.id
+}
+
+# Retrieve template information on vsphere
+data "vsphere_virtual_machine" "template" {
+  name          = "rhcos-vmware.x86_64"
+  datacenter_id = data.vsphere_datacenter.dc.id
+}
+
+#### VM CREATION ####
+
+# Set vm parameters
+{% for fqdn in groups['ocp'] %}
+resource "vsphere_virtual_machine" "{{ fqdn.split(".")[0] }}" {
+  name             = "{{ fqdn }}"
+  num_cpus         = 4
+  memory           = 16384 
+  datastore_id     = data.vsphere_datastore.datastore.id
+  host_system_id   = data.vsphere_host.host.id
+  resource_pool_id = data.vsphere_resource_pool.pool.id
+  guest_id         = data.vsphere_virtual_machine.template.guest_id
+  scsi_type        = data.vsphere_virtual_machine.template.scsi_type
+  wait_for_guest_net_timeout = 20
+{% if fqdn in groups['worker'] %}
+  depends_on       = [ vsphere_virtual_machine.tsk0001 ]
+  boot_retry_enabled = true
+  boot_retry_delay = 10000
+{% endif %}
+
+  # Set network parameters
+  network_interface {
+    network_id = data.vsphere_network.network.id
+  }
+
+  # Use a predefined vmware template has main disk
+  disk {
+    label = "disk0.vmdk"
+    size = "30"
+     thin_provisioned = false
+  }
+
+  extra_config = {
+    "disk.EnableUUID" = "TRUE"
+    "guestinfo.ignition.config.data.encoding" = "base64"
+{% if fqdn in groups['bootstrap'] %}
+    "guestinfo.ignition.config.data" = "{{ lookup('file', ocp_dir + '/TK/merge-bootstrap.64') }}"
+{% endif %}
+{% if fqdn in groups['master'] %}
+    "guestinfo.ignition.config.data" = "{{ lookup('file', ocp_dir + '/TK/master.64') }}"
+{% endif %}
+{% if fqdn in groups['worker'] %}
+    "guestinfo.ignition.config.data" = "{{ lookup('file', ocp_dir + '/TK/worker.64') }}"
+{% endif %}
+    "guestinfo.afterburn.initrd.network-kargs" = "ip={{ lookup('dig',fqdn ) }}::10.22.59.1:255.255.255.0:{{ fqdn }}:ens192:none nameserver=10.22.59.6 nameserver=10.22.59.7"
+  }
+
+  clone {
+    template_uuid = data.vsphere_virtual_machine.template.id
+
+  }
+
+}
+
+{% endfor %}

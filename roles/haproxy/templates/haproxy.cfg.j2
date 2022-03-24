@@ -33,26 +33,28 @@ frontend stats
 listen api-server-6443
   bind 10.22.59.106:6443
   mode tcp
-  server bootstrap bootstrap.tk.env.av360.org:6443 check inter 1s
-  server master1 master01.tk.env.av360.org:6443 check inter 1s
-  server master2 master02.tk.env.av360.org:6443 check inter 1s
-  server master3 master03.tk.env.av360.org:6443 check inter 1s
+  server bootstrap bootstrap.tk.env.av360.org:6443 check inter 1s backup
+{% for fqdn in groups['master'] %}
+  server {{ fqdn.split('.')[0] }} {{ fqdn }}:6443 check inter 1s
+{% endfor %}
 listen machine-config-server-22623
   bind 10.22.59.106:22623
   mode tcp
-  server bootstrap bootstrap.tk.env.av360.org:22623 check inter 1s
-  server master1 master01.tk.env.av360.org:22623 check inter 1s
-  server master2 master02.tk.env.av360.org:22623 check inter 1s
-  server master3 master03.tk.env.av360.org:22623 check inter 1s
+  server bootstrap bootstrap.tk.env.av360.org:22623 check inter 1s backup
+{% for fqdn in groups['master'] %}
+  server {{ fqdn.split('.')[0] }} {{ fqdn }}:22623 check inter 1s 
+{% endfor %}
 listen ingress-router-443
   bind 10.22.59.107:443
   mode tcp
   balance source
-  server worker1 worker01.tk.env.av360.org:443 check inter 1s
-  server worker2 worker02.tk.env.av360.org:443 check inter 1s
+{% for fqdn in groups['master'] %}
+  server {{ fqdn.split('.')[0] }} {{ fqdn }}:443 check inter 1s
+{% endfor %}
 listen ingress-router-80
   bind 10.22.59.107:80
   mode tcp
   balance source
-  server worker1 worker01.tk.env.av360.org:80 check inter 1s
-  server worker2 worker02.tk.env.av360.org:80 check inter 1s
+{% for fqdn in groups['master'] %}
+  server {{ fqdn.split('.')[0] }} {{ fqdn }}:80 check inter 1s
+{% endfor %}

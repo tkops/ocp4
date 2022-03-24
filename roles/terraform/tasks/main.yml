@@ -25,3 +25,31 @@
   failed_when: false
   changed_when: ('"already installed" not in result.stderr') or (result.rc == 0)
 
+
+- name: delete TF dir
+  file:
+    path: "{{ ocp_dir }}/TF"
+    state: absent
+  changed_when: false
+
+
+- name: create tf dir
+  file:
+    path: "{{ ocp_dir }}/TF"
+    state: directory
+  changed_when: false
+    
+
+- name: create terrform file
+  template:
+    src: main.tf.j2
+    dest: "{{ ocp_dir }}/TF/main.tf"
+  tags: createtf
+
+- name: create vms via terraform
+  community.general.terraform:
+    project_path: "{{ ocp_dir }}/TF"
+    state: present
+    force_init: true
+
+
