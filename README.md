@@ -2,7 +2,7 @@
 ## set password for ansible vault and install reqs
 ```mermaid
 graph TD;
-    A-->B;
+    A[bastion]-->B;
     A-->C;
     B-->D;
     C-->D;
