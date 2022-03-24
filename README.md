@@ -1,5 +1,5 @@
 # OCP4 UPI Installation on vshpere
-## set password for ansible vault and install reqs
+## Instllation Flow
 ```mermaid
 flowchart TD
     subgraph ocp
@@ -27,7 +27,7 @@ flowchart TD
 
     
 ```
-
+## set password for ansible vault and install reqs
 ```
 [root@bastion ocp4]#  echo ******* > pw
 [root@bastion ocp4]#  ansible-galaxy collection install -r requirements.yml
