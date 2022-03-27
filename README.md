@@ -1,4 +1,34 @@
 # OCP4 UPI Installation on vshpere
+## Installation Flow
+```mermaid
+flowchart TD
+    subgraph ocp
+       subgraph master
+           m1;m2;m3
+        end
+        subgraph worker
+          w1;w2
+        end
+    end
+    subgraph bootstrap
+      b1[bootstrap.tk.env.av360.org]
+    end
+    subgraph bastion
+      n1(nginx)
+      subgraph haproxy
+         h1[api:6443]
+         h2[apps:443/80]
+         h3[ign:22623]
+      end
+    end
+    b1 --get ignition--> n1
+    master --get ignition--> haproxy --> bootstrap
+    master --get config--> bootstrap
+    worker --get ignition--> haproxy --> bootstrap
+    worker --get config--> master
+
+    
+```
 ## set password for ansible vault and install reqs
 ```
 [root@bastion ocp4]#  echo ******* > pw
