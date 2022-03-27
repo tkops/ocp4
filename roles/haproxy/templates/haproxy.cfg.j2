@@ -48,13 +48,13 @@ listen ingress-router-443
   bind 10.22.59.107:443
   mode tcp
   balance source
-{% for fqdn in groups['master'] %}
+{% for fqdn in groups['worker'] %}
   server {{ fqdn.split('.')[0] }} {{ fqdn }}:443 check inter 1s
 {% endfor %}
 listen ingress-router-80
   bind 10.22.59.107:80
   mode tcp
   balance source
-{% for fqdn in groups['master'] %}
+{% for fqdn in groups['worker'] %}
   server {{ fqdn.split('.')[0] }} {{ fqdn }}:80 check inter 1s
 {% endfor %}
