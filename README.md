@@ -1,33 +1,31 @@
 # OCP4 UPI Installation on vshpere
-## Installation Flow
+## Flowcharts
+### Installation Flow
 ```mermaid
-flowchart TD
-    subgraph ocp
-       subgraph master
+flowchart BT
+    subgraph ocp[Openshift]
+       subgraph master[Master]
            m1;m2;m3
         end
-        subgraph worker
+        subgraph worker[Worker]
           w1;w2
         end
     end
-    subgraph bootstrap
-      b1[bootstrap.tk.env.av360.org]
+    subgraph bootstrap[Bootstrap]
+    b1[temp. bootstrap]
     end
-    subgraph bastion
+        subgraph bastion[Bastion]
       n1(nginx)
-      subgraph haproxy
-         h1[api:6443]
-         h2[apps:443/80]
-         h3[ign:22623]
-      end
+      haproxy
     end
-    b1 --get ignition--> n1
-    master --get ignition--> haproxy --> bootstrap
-    master --get config--> bootstrap
-    worker --get ignition--> haproxy --> bootstrap
-    worker --get config--> master
+    bootstrap --1. get ignition--> n1
+    master --2. get ignition--> bootstrap
+    master --3. get config--> bootstrap
+    worker --4. get ignition--> bootstrap
+    worker --5. get config--> master
+```
+### Haproxy Config
 
-    
 ```
 ## set password for ansible vault and install reqs
 ```
