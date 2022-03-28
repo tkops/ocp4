@@ -25,6 +25,36 @@ flowchart BT
     worker --5. get config--> master
 ```
 ### Haproxy Config
+```mermaid
+flowchart TD
+  subgraph bastion
+    subgraph haproxy
+      api[api/api-int];apps
+    end
+    nginx
+  end
+  subgraph bootstrap
+    b1[temp. bootstrap]
+  end
+  subgraph master
+    m1;m2;m3
+  end
+  subgraph worker
+    w1;w2
+  end
+  subgraph client
+    user
+  end
+  client --> haproxy
+  api --6443--> master
+  api --6443--> bootstrap
+  api --22623--> master
+  api --22623--> bootstrap
+  apps --80--> worker
+  apps --443--> worker
+```
+
+## Installation Guide
 
 ```
 ## set password for ansible vault and install reqs
