@@ -56,9 +56,9 @@ flowchart TD
 
 ## Installation Guide
 
-```
 ## set password for ansible vault and install reqs
 ```
+
 [root@bastion ocp4]#  echo ******* > pw
 [root@bastion ocp4]#  ansible-galaxy collection install -r requirements.yml
  ```
