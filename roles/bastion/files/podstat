@@ -1,0 +1,1 @@
+oc get pods -A|egrep -v '([1-9])\/\1'|grep -v Completed
