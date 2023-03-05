@@ -1,0 +1,31 @@
+- name: create guest vm
+  vmware_guest:
+    hostname: vc.ad.av360.org
+    username: tobias.koch@ad.av360.org
+    password: "{{ tk_vcenter_pw }}"
+    datacenter: AV360
+    cluster: DEMO
+    folder: /
+    name: tk-test01
+    state: present
+    guest_id: rhel8_64Guest
+    hardware:
+      memory_mb: 8192
+      num_cpus: 4
+    networks:
+    - vlan: VLAN2159
+      type: static 
+    template: rhcos-vmware.x86_64
+    disk: 
+    - size_gb: 30
+      type: thin
+      datastore: SSD-1 
+    advanced_settings:
+      - key: disk.EnableUUID
+        value: TRUE
+      - key: guestinfo.ignition.config.data.encoding
+        value: base64
+      - key: guestinfo.ignition.config.data
+        value: ewogICJpZ25pdGlvbiI6IHsKICAgICJjb25maWciOiB7CiAgICAgICJtZXJnZSI6IFsKICAgICAgICB7CiAgICAgICAgICAic291cmNlIjogImh0dHA6Ly9iYXN0aW9uLnRrLmVudi5hdjM2MC5vcmcvYm9vdHN0cmFwLmlnbiIsCiAgICAgICAgICAidmVyaWZpY2F0aW9uIjoge30KICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICAidGltZW91dHMiOiB7fSwKICAgICJ2ZXJzaW9uIjogIjMuMi4wIgogIH0sCiAgIm5ldHdvcmtkIjoge30sCiAgInBhc3N3ZCI6IHt9LAogICJzdG9yYWdlIjoge30sCiAgInN5c3RlbWQiOiB7fQp9Cgo=
+      - key: guestinfo.afterburn.initrd.network-kargs
+        value: ip=10.22.59.100::10.22.59.1:255.255.255.0:bootstrap.tk.env.av360.org:ens192:none nameserver=10.22.59.6 nameserver=10.22.59.7
