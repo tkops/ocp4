@@ -1,0 +1,7 @@
+- name: List all existing virtual machines on node
+  community.general.proxmox_vm_info:
+    api_host: "{{ pve_host }}"
+    api_user: "{{ pve_user }}"
+    api_token_id: '{{ pve_id | default(omit) }}'
+    api_token_secret: '{{ pve_secret | default(omit) }}'
+    node: "{{ pve_node }}"
