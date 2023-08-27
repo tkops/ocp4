@@ -1,4 +1,7 @@
 # OCP4 UPI Installation on vshpere
+## Prerequisits
+   - install git
+   - install ansible
 ## Flowcharts
 ### Installation Flow
 ```mermaid
